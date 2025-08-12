@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Helmet } from "react-helmet-async";
+// import { Helmet } from "react-helmet-async";
 import styles from "./TagCategoryManager.module.scss";
 import TagCategoryCard from "../components/TagCategoryCard";
 import TagCategoryForm from "../components/TagCategoryForm";
@@ -87,7 +87,7 @@ const Index: React.FC = () => {
 
   return (
     <main className={styles.container}>
-      <Helmet>
+      <div>
         <title>Tag Category Management | Admin</title>
         <meta
           name="description"
@@ -105,7 +105,7 @@ const Index: React.FC = () => {
               "CRUD for tag categories with metadata and sub-categories",
           })}
         </script>
-      </Helmet>
+      </div>
 
       <header className={styles.header}>
         <h1 className={styles.h1}>Tag Category Management</h1>

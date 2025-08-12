@@ -9,7 +9,6 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <HelmetProvider>
         <Toaster />
         <BrowserRouter>
           <Routes>
@@ -17,7 +16,6 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
-    </HelmetProvider>
   </QueryClientProvider>
 );
 
