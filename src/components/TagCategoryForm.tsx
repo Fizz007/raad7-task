@@ -5,9 +5,16 @@ import type {
   MetadataConfig,
   TagCategoryFormValues,
   Rule,
+  TagCategoryStatus,
+  PrecisionType,
+  TagGroup,
 } from "../interfaces";
 
-import { TagCategoryStatus, PrecisionType, TagGroup } from "../interfaces";
+import {
+  TagCategoryStatusValues,
+  PrecisionTypeValues,
+  TagGroupValues,
+} from "../interfaces";
 
 export interface TagCategoryFormProps {
   mode: "create" | "edit";
@@ -22,20 +29,26 @@ const defaultMetadata: MetadataConfig = {
   rules: [],
 };
 
-const TagCategoryForm: React.FC<TagCategoryFormProps> = ({ mode, initial, onCancel, onSubmit }) => {
+const TagCategoryForm: React.FC<TagCategoryFormProps> = ({
+  mode,
+  initial,
+  onCancel,
+  onSubmit,
+}) => {
   const [values, setValues] = useState<TagCategoryFormValues>(() => ({
     name: "",
     description: "",
-    status: TagCategoryStatus.Active,
-    precisionType: PrecisionType.Exact,
-    group: TagGroup.System,
+    status: "active" as TagCategoryStatus,
+    precisionType: "exact" as PrecisionType,
+    group: "system" as TagGroup,
     metadataConfig: defaultMetadata,
     subCategories: [],
   }));
 
   useEffect(() => {
     if (mode === "edit" && initial) {
-      const { id: _id, createdAt: _c, lastUpdatedAt: _u, deleted: _d, ...rest } = initial;
+      const { id: _id, createdAt: _c, lastUpdatedAt: _u, deleted: _d, ...rest } =
+        initial;
       setValues({
         ...rest,
         description: rest.description ?? "",
@@ -60,13 +73,19 @@ const TagCategoryForm: React.FC<TagCategoryFormProps> = ({ mode, initial, onCanc
     );
   }, [values]);
 
-  const updateField = <K extends keyof TagCategoryFormValues>(key: K, val: TagCategoryFormValues[K]) => {
+  const updateField = <K extends keyof TagCategoryFormValues>(
+    key: K,
+    val: TagCategoryFormValues[K]
+  ) => {
     setValues((prev) => ({ ...prev, [key]: val }));
   };
 
   const addSubCategory = (name: string) => {
     if (!name.trim()) return;
-    const id = typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : `sc-${Date.now()}`;
+    const id =
+      typeof crypto !== "undefined" && "randomUUID" in crypto
+        ? crypto.randomUUID()
+        : `sc-${Date.now()}`;
     updateField("subCategories", [...values.subCategories, { id, name: name.trim() }]);
   };
 
@@ -102,7 +121,9 @@ const TagCategoryForm: React.FC<TagCategoryFormProps> = ({ mode, initial, onCanc
   return (
     <form className={styles["form"]} onSubmit={handleSubmit} noValidate>
       <fieldset className={styles.fieldset}>
-        <legend className={styles.legend}>{isEdit ? "Edit Tag Category" : "Create Tag Category"}</legend>
+        <legend className={styles.legend}>
+          {isEdit ? "Edit Tag Category" : "Create Tag Category"}
+        </legend>
 
         <div className={styles.grid}>
           <label className={styles.label}>
@@ -131,11 +152,15 @@ const TagCategoryForm: React.FC<TagCategoryFormProps> = ({ mode, initial, onCanc
             <select
               className={styles.select}
               value={values.status}
-              onChange={(e) => updateField("status", e.currentTarget.value as TagCategoryStatus)}
+              onChange={(e) =>
+                updateField("status", e.currentTarget.value as TagCategoryStatus)
+              }
               required
             >
-              {Object.values(TagCategoryStatus).map((s) => (
-                <option key={s} value={s}>{s}</option>
+              {TagCategoryStatusValues.map((s) => (
+                <option key={s} value={s}>
+                  {s}
+                </option>
               ))}
             </select>
           </label>
@@ -145,11 +170,15 @@ const TagCategoryForm: React.FC<TagCategoryFormProps> = ({ mode, initial, onCanc
             <select
               className={styles.select}
               value={values.precisionType}
-              onChange={(e) => updateField("precisionType", e.currentTarget.value as PrecisionType)}
+              onChange={(e) =>
+                updateField("precisionType", e.currentTarget.value as PrecisionType)
+              }
               required
             >
-              {Object.values(PrecisionType).map((p) => (
-                <option key={p} value={p}>{p}</option>
+              {PrecisionTypeValues.map((p) => (
+                <option key={p} value={p}>
+                  {p}
+                </option>
               ))}
             </select>
           </label>
@@ -159,11 +188,15 @@ const TagCategoryForm: React.FC<TagCategoryFormProps> = ({ mode, initial, onCanc
             <select
               className={styles.select}
               value={values.group}
-              onChange={(e) => updateField("group", e.currentTarget.value as TagGroup)}
+              onChange={(e) =>
+                updateField("group", e.currentTarget.value as TagGroup)
+              }
               required
             >
-              {Object.values(TagGroup).map((g) => (
-                <option key={g} value={g}>{g}</option>
+              {TagGroupValues.map((g) => (
+                <option key={g} value={g}>
+                  {g}
+                </option>
               ))}
             </select>
           </label>
@@ -176,7 +209,12 @@ const TagCategoryForm: React.FC<TagCategoryFormProps> = ({ mode, initial, onCanc
               <input
                 type="checkbox"
                 checked={values.metadataConfig.caseSensitive}
-                onChange={(e) => updateField("metadataConfig", { ...values.metadataConfig, caseSensitive: e.currentTarget.checked })}
+                onChange={(e) =>
+                  updateField("metadataConfig", {
+                    ...values.metadataConfig,
+                    caseSensitive: e.currentTarget.checked,
+                  })
+                }
               />
               <span>Case sensitive</span>
             </label>
@@ -190,24 +228,48 @@ const TagCategoryForm: React.FC<TagCategoryFormProps> = ({ mode, initial, onCanc
                 min={0}
                 max={1}
                 value={values.metadataConfig.matchThreshold ?? 0}
-                onChange={(e) => updateField("metadataConfig", { ...values.metadataConfig, matchThreshold: Number(e.currentTarget.value) })}
+                onChange={(e) =>
+                  updateField("metadataConfig", {
+                    ...values.metadataConfig,
+                    matchThreshold: Number(e.currentTarget.value),
+                  })
+                }
               />
             </label>
           </div>
 
           <div className={styles.rules}>
             <div className={styles.ruleAdder}>
-              <select className={styles.select} value={ruleType} onChange={(e) => setRuleType(e.currentTarget.value as any)}>
+              <select
+                className={styles.select}
+                value={ruleType}
+                onChange={(e) => setRuleType(e.currentTarget.value as "match" | "replace")}
+              >
                 <option value="match">match</option>
                 <option value="replace">replace</option>
               </select>
 
               {ruleType === "match" ? (
-                <input className={styles.input} placeholder="pattern" value={pattern} onChange={(e) => setPattern(e.currentTarget.value)} />
+                <input
+                  className={styles.input}
+                  placeholder="pattern"
+                  value={pattern}
+                  onChange={(e) => setPattern(e.currentTarget.value)}
+                />
               ) : (
                 <>
-                  <input className={styles.input} placeholder="from" value={from} onChange={(e) => setFrom(e.currentTarget.value)} />
-                  <input className={styles.input} placeholder="to" value={to} onChange={(e) => setTo(e.currentTarget.value)} />
+                  <input
+                    className={styles.input}
+                    placeholder="from"
+                    value={from}
+                    onChange={(e) => setFrom(e.currentTarget.value)}
+                  />
+                  <input
+                    className={styles.input}
+                    placeholder="to"
+                    value={to}
+                    onChange={(e) => setTo(e.currentTarget.value)}
+                  />
                 </>
               )}
 
@@ -234,11 +296,21 @@ const TagCategoryForm: React.FC<TagCategoryFormProps> = ({ mode, initial, onCanc
               {(values.metadataConfig.rules ?? []).map((r, idx) => (
                 <li key={idx} className={styles.ruleItem}>
                   {r.kind === "match" ? (
-                    <span>match: <code>{r.pattern}</code></span>
+                    <span>
+                      match: <code>{r.pattern}</code>
+                    </span>
                   ) : (
-                    <span>replace: <code>{r.from}</code> → <code>{r.to}</code></span>
+                    <span>
+                      replace: <code>{r.from}</code> → <code>{r.to}</code>
+                    </span>
                   )}
-                  <button type="button" className={`${styles.btn} ${styles.remove}`} onClick={() => removeRule(idx)}>Remove</button>
+                  <button
+                    type="button"
+                    className={`${styles.btn} ${styles.remove}`}
+                    onClick={() => removeRule(idx)}
+                  >
+                    Remove
+                  </button>
                 </li>
               ))}
             </ul>
@@ -248,22 +320,52 @@ const TagCategoryForm: React.FC<TagCategoryFormProps> = ({ mode, initial, onCanc
         <section className={styles.section} aria-label="Sub-categories">
           <h4 className={styles.sectionTitle}>Sub-categories</h4>
           <div className={styles.subAdder}>
-            <input className={styles.input} placeholder="Name" value={newSub} onChange={(e) => setNewSub(e.currentTarget.value)} />
-            <button type="button" className={`${styles.btn} ${styles.add}`} onClick={() => { addSubCategory(newSub); setNewSub(""); }}>Add</button>
+            <input
+              className={styles.input}
+              placeholder="Name"
+              value={newSub}
+              onChange={(e) => setNewSub(e.currentTarget.value)}
+            />
+            <button
+              type="button"
+              className={`${styles.btn} ${styles.add}`}
+              onClick={() => {
+                addSubCategory(newSub);
+                setNewSub("");
+              }}
+            >
+              Add
+            </button>
           </div>
           <ul className={styles.subList}>
             {values.subCategories.map((s) => (
               <li key={s.id} className={styles.subItem}>
                 <span>{s.name}</span>
-                <button type="button" className={`${styles.btn} ${styles.remove}`} onClick={() => removeSubCategory(s.id)}>Remove</button>
+                <button
+                  type="button"
+                  className={`${styles.btn} ${styles.remove}`}
+                  onClick={() => removeSubCategory(s.id)}
+                >
+                  Remove
+                </button>
               </li>
             ))}
           </ul>
         </section>
 
         <div className={styles.actions}>
-          <button type="button" className={`${styles.btn} ${styles.secondary}`} onClick={onCancel}>Cancel</button>
-          <button type="submit" className={`${styles.btn} ${styles.primary}`} disabled={!isValid}>
+          <button
+            type="button"
+            className={`${styles.btn} ${styles.secondary}`}
+            onClick={onCancel}
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className={`${styles.btn} ${styles.primary}`}
+            disabled={!isValid}
+          >
             {isEdit ? "Save Changes" : "Create Category"}
           </button>
         </div>

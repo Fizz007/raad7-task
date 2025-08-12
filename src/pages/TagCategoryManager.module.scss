@@ -1,9 +1,9 @@
 .container {
-  --border: hsl(var(--border));
-  --ring: hsl(var(--ring));
   display: grid;
   gap: 1rem;
   padding: 2rem 1rem;
+  border-color: hsl(210, 16%, 82%); /* example border color */
+  ring-color: hsl(215, 20%, 65%);
 }
 
 .header {
@@ -25,24 +25,24 @@
 
 .btn {
   appearance: none;
-  border: 1px solid var(--border);
+  border: 1px solid hsl(210, 16%, 82%);
   padding: 0.625rem 0.875rem;
-  border-radius: calc(var(--radius) - 2px);
-  background: hsl(var(--secondary));
-  color: hsl(var(--secondary-foreground));
+  border-radius: 6px; /* example radius */
+  background: hsl(220, 15%, 85%);
+  color: hsl(220, 15%, 15%);
   cursor: pointer;
   transition: transform 160ms ease, background-color 160ms ease, border-color 160ms ease;
+}
 
-  &:hover {
-    transform: translateY(-1px);
-    background: hsl(var(--accent));
-  }
+.btn:hover {
+  transform: translateY(-1px);
+  background: hsl(200, 90%, 50%);
 }
 
 .primary {
-  background: linear-gradient(135deg, hsl(var(--sidebar-ring)) 0%, hsl(var(--accent)) 100%);
-  color: hsl(var(--sidebar-primary-foreground));
-  border-color: hsl(var(--sidebar-ring));
+  background: linear-gradient(135deg, hsl(200, 80%, 60%) 0%, hsl(180, 90%, 50%) 100%);
+  color: hsl(0, 0%, 98%);
+  border-color: hsl(200, 80%, 60%);
 }
 
 .formWrap {
@@ -58,21 +58,25 @@
 
 .empty {
   grid-column: 1 / -1;
-  border: 1px dashed var(--border);
-  border-radius: var(--radius);
+  border: 1px dashed hsl(210, 16%, 82%);
+  border-radius: 6px;
   padding: 1rem;
   text-align: center;
 }
 
 .legend {
   font-size: 0.875rem;
-  color: hsl(var(--muted-foreground));
+  color: hsl(215, 15%, 60%);
 }
 
 @media (max-width: 1024px) {
-  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 640px) {
-  .grid { grid-template-columns: 1fr; }
+  .grid {
+    grid-template-columns: 1fr;
+  }
 }

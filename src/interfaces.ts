@@ -5,22 +5,14 @@ export interface IBaseModel {
   deleted?: boolean;
 }
 
-export enum TagCategoryStatus {
-  Active = "active",
-  Inactive = "inactive",
-}
+export type TagCategoryStatus = "active" | "inactive";
+export const TagCategoryStatusValues: TagCategoryStatus[] = ["active", "inactive"];
 
-export enum PrecisionType {
-  Exact = "exact",
-  Fuzzy = "fuzzy",
-  Regex = "regex",
-}
+export type PrecisionType = "exact" | "fuzzy" | "regex";
+export const PrecisionTypeValues: PrecisionType[] = ["exact", "fuzzy", "regex"];
 
-export enum TagGroup {
-  System = "system",
-  User = "user",
-  Content = "content",
-}
+export type TagGroup = "system" | "user" | "content";
+export const TagGroupValues: TagGroup[] = ["system", "user", "content"];
 
 export type MatchRule = {
   kind: "match";
