@@ -1,0 +1,47 @@
+[
+  {
+    "id": "c1",
+    "name": "Product Tags",
+    "description": "Tags related to product attributes and taxonomy",
+    "status": "active",
+    "precisionType": "exact",
+    "group": "system",
+    "metadataConfig": {
+      "caseSensitive": false,
+      "matchThreshold": 0.9,
+      "rules": [
+        { "kind": "match", "pattern": "^SKU-\\d+$" },
+        { "kind": "replace", "from": "colour", "to": "color" }
+      ]
+    },
+    "subCategories": [
+      { "id": "sc1", "name": "Size" },
+      { "id": "sc2", "name": "Material" }
+    ],
+    "createdAt": "2024-08-01T10:00:00.000Z",
+    "lastUpdatedAt": "2024-08-01T10:00:00.000Z",
+    "deleted": false
+  },
+  {
+    "id": "c2",
+    "name": "Content Moderation",
+    "description": "Categories used by moderation pipelines",
+    "status": "inactive",
+    "precisionType": "fuzzy",
+    "group": "content",
+    "metadataConfig": {
+      "caseSensitive": true,
+      "matchThreshold": 0.75,
+      "rules": [
+        { "kind": "match", "pattern": "sensitive|nsfw" }
+      ]
+    },
+    "subCategories": [
+      { "id": "sc3", "name": "Profanity" },
+      { "id": "sc4", "name": "Personal Data" }
+    ],
+    "createdAt": "2024-08-10T12:00:00.000Z",
+    "lastUpdatedAt": "2024-09-15T15:00:00.000Z",
+    "deleted": false
+  }
+]
